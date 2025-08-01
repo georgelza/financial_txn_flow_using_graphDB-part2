@@ -1,0 +1,20 @@
+{
+  "name": "neo4j-txn-node-sink",
+  "config": {
+    "connector.class": "org.neo4j.connectors.kafka.sink.Neo4jConnector",
+    "topics": "ob_txn,ib_txn",
+    "neo4j.uri": "bolt://neo4j:7687",
+    "neo4j.authentication.basic.username": "neo4j",
+    "neo4j.authentication.basic.password": "dbpassword",
+    "neo4j.cypher.topic.ob_txn": "MERGE (t:AccountEvents {eventId: event.eventId}) ON CREATE SET t += {eventId: event.eventId, accountEntityId: event.accountEntityId, counterpartyEntityId: event.counterpartyEntityId, transactionID: event.transactionID} ON MATCH SET t += {eventTime: event.eventTime, baseValue: event.baseValue, currency: event.currency, direction: event.direction, localInstrument: event.localInstrument, settlementMethod: event.settlementMethod, settlementClearingSystemCode: event.settlementClearingSystemCode, paymentMethod: event.paymentMethod, overallScore: event.overallScore, counterpartyBICFI: coalesce(event.counterpartyBICFI, t.counterpartyBICFI), bicfi: coalesce(event.bicfi, t.bicfi)}",
+    "neo4j.cypher.topic.ib_txn": "MERGE (t:AccountEvents {eventId: event.eventId}) ON CREATE SET t += {eventId: event.eventId, accountEntityId: event.accountEntityId, counterpartyEntityId: event.counterpartyEntityId, transactionID: event.transactionID} ON MATCH SET t += {eventTime: event.eventTime, baseValue: event.baseValue, currency: event.currency, direction: event.direction, localInstrument: event.localInstrument, settlementMethod: event.settlementMethod, settlementClearingSystemCode: event.settlementClearingSystemCode, paymentMethod: event.paymentMethod, overallScore: event.overallScore, counterpartyBICFI: coalesce(event.counterpartyBICFI, t.counterpartyBICFI), bicfi: coalesce(event.bicfi, t.bicfi)}",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "tasks.max": "2",
+    "neo4j.batch.size": "1000",
+    "neo4j.batch.timeout.msecs": "5000",
+    "neo4j.retry.backoff.msecs": "3000",
+    "neo4j.retry.max.attemps": "5"
+  }
+}
