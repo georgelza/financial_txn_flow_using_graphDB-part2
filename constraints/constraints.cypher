@@ -3,6 +3,7 @@ CREATE CONSTRAINT bank_node_fspiId_uidx IF NOT EXISTS
 FOR (a:Bank) 
 REQUIRE a.fspiId IS UNIQUE;
 
+// Only one fspiAgentAccountId
 CREATE CONSTRAINT Account_node_fspiAgentAccountId_uidx IF NOT EXISTS
 FOR (a:Account) 
 REQUIRE a.fspiAgentAccountId IS UNIQUE;
@@ -19,15 +20,16 @@ CREATE CONSTRAINT Person_node_pps_uidx IF NOT EXISTS
 FOR (a:Person) 
 REQUIRE a.pps IS UNIQUE;
 
-CREATE CONSTRAINT Mobile_device_node_mobile_number_uidx IF NOT EXISTS
+// Mobile Phone Numbers and Landline can not be unique as it can be associated with multiple people living at the same address.
+CREATE INDEX Mobile_device_node_mobile_number_uidx IF NOT EXISTS
 FOR (a:Mobile_device) 
-REQUIRE a.mobile_number IS UNIQUE;
+ON a.mobile_number;
 
-CREATE CONSTRAINT LandLine_number_node_phone_number_uidx IF NOT EXISTS
+CREATE INDEX LandLine_number_node_phone_number_uidx IF NOT EXISTS
 FOR (a:LandLine_number) 
-REQUIRE a.phone_number IS UNIQUE;
+ON a.phone_number;
 
-CREATE CONSTRAINT Address_node_parcel_uidx IF NOT EXISTS
+// Similar to MobilePhone Numbers and Landline Numbers, Addresses can be associated with multiple people or corporates.
+CREATE INDEX Address_node_parcel_uidx IF NOT EXISTS
 FOR (a:Address) 
-REQUIRE a.parcel IS UNIQUE;
-
+ON a.parcel;
