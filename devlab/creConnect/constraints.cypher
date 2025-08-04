@@ -40,10 +40,10 @@ CREATE INDEX ah_tenantid_idx IF NOT EXISTS
 FOR (a:AccountHolder) 
 ON (a.tenantId);
 
-// Used by ah1.accountEntityId->txn->ah2.counterpartyEntityId edge
-CREATE INDEX ah_counterpartyEntityId_idx IF NOT EXISTS
+// Used by ah1.accountEntityId->txn->ah2.counterpartyAgentAccountId edge
+CREATE INDEX ah_counterpartyAgentAccountId_idx IF NOT EXISTS
 FOR (a:AccountHolder) 
-ON (a.counterpartyEntityId);
+ON (a.counterpartyAgentAccountId);
 
 // Neo4j Transaction Processing - Index Setup Script
 // Run this script in Neo4j Browser or cypher-shell before deploying Kafka Connect

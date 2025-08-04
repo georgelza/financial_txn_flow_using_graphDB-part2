@@ -1,93 +1,49 @@
 ## Financial Transaction Flow 
 
-Our little exploration into the world of GraphDB's and how they defined objects/nodes/records and then create edges/links/relationships between them.
+## Financial Transaction Flow 
 
-See []() for the associated Blog article.
+Ok, so in part 1 we created our basic GraphDB model with synthentic data of banks, accounts, corporates, people and their associated information like addresses, mobile devices, land line numbers etc.
 
-GIT Repo: [financial_txn_flow_using_graphDB - part 1](https://github.com/georgelza/financial_txn_flow_using_graphDB)
+We will now proceed a little further down our rabbit hole and add that phase 3 note, by introducing a time based view onto our events, commonly referred to as a temporal view. 
 
-### Phase 1
+First up will be financial transactions. Now every transaction already have a eventTime as a property so you might ask whats up... 
 
-Define Nodes:
+Easiest way to think about this... Twitter which just happens to be a very BIG user of Graph database platforms. 
+If we now consider what they do... 
 
-  - Banks
-  - Accounts
-  - AccountHolders
-  - Corporate's
-  - Person's
-- 
-  - Mobile Devices
-  - Landline Numbers
-  - Address
+They have their user and all his/her attributes mapped out as nodes, and then have each twitter post created as a node... into the node they lavel the node as current, but also add a 2nd attribute pointing to the previous posting.
 
-  - AccountEvents (transactions)
-    - Inbound
-    - Outbound
-
-I've also added mappings defining nodes for continents and countries, and then muldiple edge models as per classifications.
-  - continents
-  - Countries
-    - Africa
-    - Asia
-    - Europe
-    - North America
-    - South America
-    - Oceana
-  - classifications
+And well, thats what we're going to do, we will "store the current" transaction and then point that to the previous transaction for our account, be that a outbound or inbound event. creating a time line/thread of all financtial events on our account.
 
 
-### Phase 2
+NOTE: 
 
-Create basic edges:
+1. I did quite a bit of refactoring around the property labels for `1.banks`, `2.accounts`, `3.accountHolders` nodes, as also used in `4.corporate.cypher` and `5.1.person*.cypher` nodes.
 
-  - Bank ->           Account
-  - Account ->        AccountHolder
-  - AccountHolder ->  Corporate
-    - Corporate ->    Person
-  - AccountHolder ->  Person
-  - Person ->         Mobile Numbers
-  - Person ->         Landline Numbers
-  - Corporate ->      Landline Numbers
-  - Address ->        Person
-  - Address ->        Corporate
-  - accEvent ->       Account
-    - As a outbound and inbound edge.
-  
-  - Country ->        Continent         -> Added files, have not coded import or edges
-  - Country ->        Classification's  -> Added files, have not coded import or edges
-  - Address ->        Country           -> Added files, have not coded import or edges
+2. aaa
 
-As far as accountEvents -> is concerned, see blog-doc/diagrams/Account_accountEvent_Account_edge.png for a depiction how this has been modelled.
 
-  - outbound
-    - (ob Account) -> [Paid_Funds_To] -> (ob AccountEvents) the outbound transaction is modelled as a node
+3. We're also no introducing creating unique and normal indexes to provide for stable scalability as the entire dataset grows, see `constraints/constraints.cypher`.
 
-  - inbound
-    - (ib Account) <- [Received_Funds_To] - (ib AccountEvents) the inbound transaction is also modelled as a node
 
-  - (ob AccountEvents) -> [Same_TxnEvent] -> (ib AccountEvents)  Here we now associated the ob accountEvent with the ib accountEvent based on them having the same transactionId.
-    - This is done as a edge for both directions.
+
+For part 1, see [Fraud Analytics using a different approach, GraphDB data platform (part 1)](https://medium.com/@georgelza/fraud-analytics-using-a-different-approach-graphdb-data-platform-part-1-807c68d03bff) for the associated Blog article.
+
+
+For part 2 (this one), see []()
+
+
+GIT Repo: 
+
+- [financial_txn_flow_using_graphDB - part 1](https://github.com/georgelza/financial_txn_flow_using_graphDB-part1)
+
+- [financial_txn_flow_using_graphDB - part 2](https://github.com/georgelza/financial_txn_flow_using_graphDB-part2)
 
 
 ### Phase 3 - TO BE DONE
 
 Figure out how to introduce temporal concepts between Account Events (for now it will be on inbound and outbound AccountEvents only), linking one to next in a chain, think link list, also allowing n+1 to reference. Basically creating a time travel chain of events for the account.
 
-
-### Additional Data Products required
-
-1. Banks provide (if individual) accountEntityId => pps
-2. Banks provide (if corporate) accountEntityId => regId
-3. National Business Registry provide regId => Company Owners/ppss
-4. National Department of Home Affairs/Home Office provide pps => Personal records, name, surname, sex, dob, ...
-
-5. Possible (stretching wishes), Mobile Telco's Operators provide pps => mobiledevice_number
-6. Reported Fraud provide know offenders and known victim ppss.
-
-
-### Kafka Connect Sinks
-
-This will be a seperate Blog. Will update this section with the link to the GIT repo once completed.
 
 
 ### To run
@@ -98,6 +54,9 @@ This will be a seperate Blog. Will update this section with the link to the GIT 
 - `make build`
 - `cd [project_root]/devlab`
 - `make run`
+
+
+You can now execute in the order of the script names/numbering the code from `nodes/` followed by `contstraints/` and `edges/` as per the `README.md's` that can be found in each of the previous directories.
 
 
 ## References

@@ -681,3 +681,4 @@ ON MATCH SET n = {
   postal_code: "V42 N293",
   countryCode: "IE"
 }
+RETURN n;

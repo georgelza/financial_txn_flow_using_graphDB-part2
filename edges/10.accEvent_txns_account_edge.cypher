@@ -3,14 +3,14 @@
 // Outbound
 MATCH (acc:Account)
 MATCH (ae:AccountEvents)
-WHERE acc.accountEntityId = ae.accountEntityId and ae.direction = "outbound"
+WHERE acc.fspiAgentAccountId = ae.fspiAgentAccountId and ae.direction = "outbound"
 MERGE (acc)-[:PAID_FUNDS_TO]->(ae);
 
 // Create (Account) -> ["RECEIVED_FUNDS_FROM"] -> (AccountEvents) relationships edges
 // Inbound
 MATCH (acc:Account)
 MATCH (ae:AccountEvents)
-WHERE acc.accountEntityId = ae.accountEntityId and ae.direction = "inbound"
+WHERE acc.fspiAgentAccountId = ae.fspiAgentAccountId and ae.direction = "inbound"
 MERGE (acc)-[:RECEIVED_FUNDS_FROM]->(ae);
 
 
