@@ -12,5 +12,7 @@ Execute Order:
 - 7.mobile_device.cypher
 - 8.landline_number.cypher
 - 9.address_ie.cypher
-- 10.txnEvents.cypher
-- -> Next execute the edges/* then return here. This will create our primary wire framework of all parties and basic relationships.
+- 10.AccEvents.cypher
+
+- -> Next execute  constraints/constraints.cypher
+- -> Then execute the edges/* after which you can return here. 
