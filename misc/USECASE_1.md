@@ -2,6 +2,7 @@
 
 [Third-party payment to high-risk jurisdiction](https://neo4j.com/developer/industry-use-cases/finserv/retail-banking/transaction-monitoring/rules/transaction-monitoring-high-risk-jurisdictions/)
 
+
 By: [Michael Down from Neo4J](https://www.linkedin.com/in/michaelkdown/)
 
 
